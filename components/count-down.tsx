@@ -74,10 +74,6 @@ export default function Countdown() {
         return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
     }
 
-    const handleDurationChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setDuration(Number(e.target.value) || "");
-    }
-
     return (
         <div className="flex flex-col  items-center justify-start h-screen bg-gradient-to-l from-stone-100 via-orange-200 to-stone-100 dark:bg-gray-900">
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 my-52 w-full max-w-md">

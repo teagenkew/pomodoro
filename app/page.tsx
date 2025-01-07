@@ -1,8 +1,16 @@
 import Countdown from "@/components/count-down";
+import Head from "next/head";
 export default function Home() {
   return (
-    <div>
-    <Countdown/>
-    </div>
+    <>
+      <div>
+        <Head>
+          <title>Pomodoro</title>
+        </Head>
+      </div>
+      <div>
+        <Countdown />
+      </div>
+    </>
   );
 }

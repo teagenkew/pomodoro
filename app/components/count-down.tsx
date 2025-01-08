@@ -3,14 +3,17 @@ import { useState, useRef, useEffect } from "react";
 import { Button } from "@/app/components/ui/button";
 export default function Countdown() {
   const [duration, setDuration] = useState<number | string>("");
-  const [audio, setAudio] = useState<HTMLAudioElement>();
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [breakDuration, setBreakDuration] = useState<number>(0);
+  const [alarm, setAlarm] = useState<HTMLAudioElement | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [selectedButton, setSelectedButton] = useState<number | null>(null);
 
-  const alarm = new Audio("/sounds/chime.mp3");
+  useEffect(() => {
+    setAlarm(new Audio("/sounds/chime.mp3"));
+  }, []);
   const handleSetDuration = (duration: number): void => {
     setTimeLeft(duration * 60);
     setIsActive(false);
@@ -25,6 +28,12 @@ export default function Countdown() {
       setIsActive(true);
       setIsPaused(false);
     }
+  };
+
+  const handleButtonClick = (buttonId: number) => {
+    setSelectedButton((prevSelected) =>
+      prevSelected === buttonId ? null : buttonId
+    );
   };
 
   const handlePause = (): void => {
@@ -52,7 +61,9 @@ export default function Countdown() {
         setTimeLeft((prevTime) => {
           if (prevTime <= 1) {
             clearInterval(timerRef.current!);
-            setAudio(new Audio("/sounds/chime.mp3"));
+            if (alarm) {
+              alarm.play();
+            }
             setTimeLeft(breakDuration * 60);
           }
           return prevTime - 1;
@@ -89,25 +100,37 @@ export default function Countdown() {
         <div className="flex items-center justify-center gap-2 mb-6">
           <Button
             onClick={() => {
-              handleSetDuration(25), setBreakDuration(5);
+              handleSetDuration(25), setBreakDuration(5), handleButtonClick(1);
             }}
-            className="text-gray-200 dark:text-gray-200 bg-indigo-600 hover:bg-amber-300  hover:text-gray-800 font-bold"
+            className={`${
+              selectedButton === 1
+                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                : " bg-indigo-600 "
+            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
           >
             25:5
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(30), setBreakDuration(10);
+              handleSetDuration(30), setBreakDuration(10), handleButtonClick(2);
             }}
-            className="text-gray-200 dark:text-gray-200 bg-indigo-600 hover:bg-amber-300  hover:text-gray-800 font-bold"
+            className={`${
+              selectedButton === 2
+                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                : " bg-indigo-600 "
+            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
           >
             30:10
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(45), setBreakDuration(15);
+              handleSetDuration(45), setBreakDuration(15), handleButtonClick(3);
             }}
-            className="text-gray-200 dark:text-gray-200 bg-indigo-600 hover:bg-amber-300  hover:text-gray-800 font-bold"
+            className={`${
+              selectedButton === 3
+                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                : " bg-indigo-600 "
+            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
           >
             45:15
           </Button>

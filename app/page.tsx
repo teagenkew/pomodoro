@@ -1,16 +1,15 @@
-import Countdown from "@/components/count-down";
-import Head from "next/head";
+export const metadata = {
+  title: "Pomodoro",
+  icons: {
+    icon: "/bird.png",
+    apple: "/bird.png",
+  },
+};
+import Countdown from "@/app/components/count-down";
 export default function Home() {
   return (
-    <>
-      <div>
-        <Head>
-          <title>Pomodoro</title>
-        </Head>
-      </div>
-      <div>
-        <Countdown />
-      </div>
-    </>
+    <div>
+      <Countdown />
+    </div>
   );
 }

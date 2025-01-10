@@ -48,9 +48,10 @@ export default function Countdown() {
   };
 
   const handleReset = (): void => {
+    setIsBreak(false);
     setIsActive(false);
     setIsPaused(false);
-    setTimeLeft(typeof duration === "number" ? duration : 0);
+    setTimeLeft(typeof duration === "number" ? duration * 60 : 0);
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
@@ -103,52 +104,64 @@ export default function Countdown() {
           {" "}
           Hey Teagen, let's get going!{" "}
         </h1>
-        <h2 className="text-md mb-6 text-center">
-          {isActive
-            ? isBreak
-              ? "Break"
-              : "Focus"
-            : "What kind of pomodoro are we doing?"}
-        </h2>
         <div className="flex items-center justify-center gap-2 mb-6">
           <Button
             onClick={() => {
-              handleSetDuration(25), setBreakDuration(5), handleButtonClick(1);
+              handleSetDuration(25),
+                setDuration(25),
+                setBreakDuration(5),
+                handleButtonClick(1);
             }}
             className={`${
               selectedButton === 1
-                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
                 : " bg-indigo-600 "
-            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
+            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
           >
             25:5
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(30), setBreakDuration(10), handleButtonClick(2);
+              handleSetDuration(30),
+                setDuration(30),
+                setBreakDuration(10),
+                handleButtonClick(2);
             }}
             className={`${
               selectedButton === 2
-                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
                 : " bg-indigo-600 "
-            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
+            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
           >
             30:10
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(45), setBreakDuration(15), handleButtonClick(3);
+              handleSetDuration(45),
+                setDuration(45),
+                setBreakDuration(15),
+                handleButtonClick(3);
             }}
             className={`${
               selectedButton === 3
-                ? "bg-amber-500 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
                 : " bg-indigo-600 "
-            }  hover:bg-yellow-300 dark:text-gray-200 hover:text-gray-800 font-bold}`}
+            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
           >
             45:15
           </Button>
         </div>
-        <div className="text-6xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">
+        <h2 className="text-lg mb-2 text-center text-amber-600 font-semibold italic">
+          {isPaused
+            ? "paused"
+            : isActive
+            ? isBreak
+              ? "break"
+              : "focus"
+            : "What kind of pomodoro are we doing?"}
+        </h2>
+
+        <div className="text-5xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">
           {formatTime(timeLeft)}
         </div>
         <div className="flex justify-center gap-4">

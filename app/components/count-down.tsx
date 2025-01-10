@@ -2,12 +2,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/app/components/ui/button";
 export default function Countdown() {
-  const [duration, setDuration] = useState<number | string>("");
+  const [duration, setDuration] = useState<number>(0);
   const [timeLeft, setTimeLeft] = useState<number>(0);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [isPaused, setIsPaused] = useState<boolean>(false);
   const [breakDuration, setBreakDuration] = useState<number>(0);
   const [alarm, setAlarm] = useState<HTMLAudioElement | null>(null);
+  const [isBreak, setIsBreak] = useState<boolean>(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const [selectedButton, setSelectedButton] = useState<number | null>(null);
 
@@ -60,11 +61,20 @@ export default function Countdown() {
       timerRef.current = setInterval(() => {
         setTimeLeft((prevTime) => {
           if (prevTime <= 1) {
-            clearInterval(timerRef.current!);
             if (alarm) {
               alarm.play();
             }
-            setTimeLeft(breakDuration * 60);
+            if (isBreak === false) {
+              // Set break time and continue timer
+              setIsBreak(true);
+              setTimeLeft(breakDuration * 60);
+              return breakDuration * 60;
+            } else {
+              // Set focus time and continue timer
+              setIsBreak(false);
+              setTimeLeft(duration * 60);
+              return duration * 60;
+            }
           }
           return prevTime - 1;
         });
@@ -75,7 +85,7 @@ export default function Countdown() {
         clearInterval(timerRef.current);
       }
     };
-  }, [isActive, isPaused]);
+  }, [isActive, isPaused, duration, breakDuration, isBreak]);
 
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
@@ -94,8 +104,11 @@ export default function Countdown() {
           Hey Teagen, let's get going!{" "}
         </h1>
         <h2 className="text-md mb-6 text-center">
-          {" "}
-          What kind of pomodoro are we doing?{" "}
+          {isActive
+            ? isBreak
+              ? "Break"
+              : "Focus"
+            : "What kind of pomodoro are we doing?"}
         </h2>
         <div className="flex items-center justify-center gap-2 mb-6">
           <Button

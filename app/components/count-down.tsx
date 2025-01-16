@@ -19,7 +19,7 @@ export default function Countdown() {
   const [alarm, setAlarm] = useState<HTMLAudioElement | null>(null);
   const [isBreak, setIsBreak] = useState<boolean>(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
-  const [selectedButton, setSelectedButton] = useState<number | null>(null);
+  const [selectedButton, setSelectedButton] = useState<number | null>(0);
   const [isPopOut, setIsPopOut] = useState(false);
 
   const popoutWindowRef = useRef<Window | null>(null);
@@ -79,7 +79,6 @@ export default function Countdown() {
       popoutWindowRef,
     });
   };
-
 
   useEffect(() => {
     setAlarm(new Audio("/sounds/chime.mp3"));
@@ -146,7 +145,7 @@ export default function Countdown() {
   };
 
   return (
-    <div className="flex flex-col  items-center justify-start h-screen bg-gradient-to-l from-stone-100 via-orange-200 to-stone-100 dark:bg-gray-900">
+    <div className="flex flex-col  items-center justify-start h-screen bg-gradient-to-l from-stone-100 via-orange-200 to-stone-100 dark:from-stone-900 dark:via-yellow-950 dark:to-stone-900">
       <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 my-52 w-full max-w-md">
         {isActive ? (
           ""
@@ -166,9 +165,9 @@ export default function Countdown() {
             }}
             className={`${
               selectedButton === 1
-                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
                 : " bg-indigo-600 "
-            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
+            } font-bold hover:bg-indigo-700 dark:text-gray-200 bg-indigo-900 hover:text-indigo-200 }`}
           >
             25:5
           </Button>
@@ -181,7 +180,7 @@ export default function Countdown() {
             }}
             className={`${
               selectedButton === 2
-                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
                 : " bg-indigo-600 "
             } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
           >
@@ -196,14 +195,14 @@ export default function Countdown() {
             }}
             className={`${
               selectedButton === 3
-                ? "bg-indigo-200 text-indigo-800 font-bold border-2 border-solid border-indigo-600"
+                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
                 : " bg-indigo-600 "
             } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
           >
             45:15
           </Button>
         </div>
-        <h2 className="text-lg mb-2 text-center text-amber-600 font-semibold italic">
+        <h2 className="text-lg mb-2 text-center text-amber-600 dark:text-blue-300 italic">
           {isPaused
             ? "paused"
             : isActive

@@ -1,10 +1,6 @@
 import { RefObject } from "react";
 
 interface PopUpTimerProps {
-  timeLeft: number;
-  isPaused: boolean;
-  isActive: boolean;
-  isBreak: boolean;
   setIsPaused: (value: boolean) => void;
   setIsActive: (value: boolean) => void;
   setIsPopOut: (value: boolean) => void;
@@ -13,10 +9,6 @@ interface PopUpTimerProps {
 }
 
 export const togglePopout = async ({
-  timeLeft,
-  isPaused,
-  isActive,
-  isBreak,
   setIsPaused,
   setIsActive,
   setIsPopOut,

@@ -68,10 +68,6 @@ export default function Countdown() {
 
   const handlePopout = () => {
     togglePopout({
-      timeLeft,
-      isPaused,
-      isActive,
-      isBreak,
       setIsPaused,
       setIsActive,
       setIsPopOut,
@@ -152,16 +148,16 @@ export default function Countdown() {
         ) : (
           <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200 text-center">
             {" "}
-            Hey Teagen, let's get going!{" "}
+            Hey Teagen, let&apos;s get going!{" "}
           </h1>
         )}
         <div className="flex items-center justify-center gap-2 mb-6">
           <Button
             onClick={() => {
-              handleSetDuration(25),
-                setDuration(25),
-                setBreakDuration(5),
-                handleButtonClick(1);
+              handleSetDuration(25);
+              setDuration(25);
+              setBreakDuration(5);
+              handleButtonClick(1);
             }}
             className={`${
               selectedButton === 1
@@ -173,10 +169,10 @@ export default function Countdown() {
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(30),
-                setDuration(30),
-                setBreakDuration(10),
-                handleButtonClick(2);
+              handleSetDuration(30);
+              setDuration(30);
+              setBreakDuration(10);
+              handleButtonClick(2);
             }}
             className={`${
               selectedButton === 2
@@ -188,9 +184,9 @@ export default function Countdown() {
           </Button>
           <Button
             onClick={() => {
-              handleSetDuration(45),
-                setDuration(45),
-                setBreakDuration(15),
+              handleSetDuration(45);
+                setDuration(45);
+                setBreakDuration(15);
                 handleButtonClick(3);
             }}
             className={`${

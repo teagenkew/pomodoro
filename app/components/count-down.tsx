@@ -129,7 +129,7 @@ export default function Countdown() {
           : "ready";
       }
     }
-  }, [timeLeft, isPaused, isActive, isBreak]);
+  }, [timeLeft, isPaused, isActive, isBreak, alarm]);
 
   const formatTime = (time: number): string => {
     const minutes = Math.floor(time / 60);
@@ -185,9 +185,9 @@ export default function Countdown() {
           <Button
             onClick={() => {
               handleSetDuration(45);
-                setDuration(45);
-                setBreakDuration(15);
-                handleButtonClick(3);
+              setDuration(45);
+              setBreakDuration(15);
+              handleButtonClick(3);
             }}
             className={`${
               selectedButton === 3

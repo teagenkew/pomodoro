@@ -81,32 +81,44 @@ export default function Countdown() {
   }, []);
 
   useEffect(() => {
-    if (isActive && !isPaused) {
-      timerRef.current = setInterval(() => {
+    let animationFrameId: number;
+
+    let lastTime: number = Date.now();
+
+    const updateTimer = () => {
+      if (isActive && !isPaused) {
+        const currentTime = Date.now();
+        const deltaTime = (currentTime - lastTime) / 1000;
         setTimeLeft((prevTime) => {
-          if (prevTime <= 1) {
+          const newTime = Math.max(0, prevTime - deltaTime);
+
+          if (newTime <= 0) {
             if (alarm) {
               alarm.play();
             }
-            if (isBreak === false) {
-              // Set break time and continue timer
+            if (!isBreak) {
               setIsBreak(true);
-              setTimeLeft(breakDuration * 60);
               return breakDuration * 60;
             } else {
-              // Set focus time and continue timer
               setIsBreak(false);
-              setTimeLeft(duration * 60);
               return duration * 60;
             }
           }
-          return prevTime - 1;
+          return newTime;
         });
-      }, 1000);
+
+        lastTime = currentTime;
+        animationFrameId = requestAnimationFrame(updateTimer);
+      }
+    };
+
+    if (isActive && !isPaused) {
+      lastTime = Date.now();
+      animationFrameId = requestAnimationFrame(updateTimer);
     }
     return () => {
-      if (timerRef.current) {
-        clearInterval(timerRef.current);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
     };
   }, [isActive, isPaused, duration, breakDuration, isBreak]);
@@ -131,14 +143,22 @@ export default function Countdown() {
     }
   }, [timeLeft, isPaused, isActive, isBreak, alarm]);
 
-  const formatTime = (time: number): string => {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
-      2,
-      "0"
-    )}`;
+  const formatTime = (timeInSeconds: number): string => {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = Math.floor(timeInSeconds % 60);
+
+    // Pad with zeros if needed
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
   };
+
+  const getButtonClasses = (buttonId: number) =>
+    `font-bold ${
+      selectedButton === buttonId
+        ? "bg-indigo-200 text-indigo-800 border-2 border-amber-400 dark:bg-indigo-500 dark:text-indigo-300"
+        : "bg-indigo-700 text-gray-100 hover:bg-indigo-500 hover:text-indigo-200 dark:bg-indigo-800 dark:text-gray-400"
+    }`;
 
   return (
     <div className="flex flex-col  items-center justify-start h-screen bg-gradient-to-l from-stone-100 via-orange-200 to-stone-100 dark:from-stone-900 dark:via-yellow-950 dark:to-stone-900">
@@ -159,11 +179,7 @@ export default function Countdown() {
               setBreakDuration(5);
               handleButtonClick(1);
             }}
-            className={`${
-              selectedButton === 1
-                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
-                : " bg-indigo-600 "
-            } font-bold hover:bg-indigo-700 dark:text-gray-200 bg-indigo-900 hover:text-indigo-200 }`}
+            className={getButtonClasses(1)}
           >
             25:5
           </Button>
@@ -174,11 +190,7 @@ export default function Countdown() {
               setBreakDuration(10);
               handleButtonClick(2);
             }}
-            className={`${
-              selectedButton === 2
-                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
-                : " bg-indigo-600 "
-            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
+            className={getButtonClasses(2)}
           >
             30:10
           </Button>
@@ -189,11 +201,7 @@ export default function Countdown() {
               setBreakDuration(15);
               handleButtonClick(3);
             }}
-            className={`${
-              selectedButton === 3
-                ? "bg-indigo-600 text-indigo-800 font-bold border-2 border-solid border-indigo-600 dark:bg-indigo-600 dark:text-white"
-                : " bg-indigo-600 "
-            } font-bold hover:bg-indigo-900 dark:text-gray-200 hover:text-indigo-200 }`}
+            className={getButtonClasses(3)}
           >
             45:15
           </Button>
